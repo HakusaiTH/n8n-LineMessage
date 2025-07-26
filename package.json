@@ -1,19 +1,23 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "n8n-nodes-line-messaging",
   "version": "0.1.0",
-  "description": "",
+  "description": "Custom nodes for LINE Messaging API to send text, stickers, images, videos, etc. via n8n workflows",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package",
+    "line",
+    "line-bot",
+    "line-messaging-api",
+    "chatbot"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/<your-username>/n8n-nodes-line-messaging",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Phoovadet Sinsangang",
+    "email": "your-email@example.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/<your-username>/n8n-nodes-line-messaging.git"
   },
   "engines": {
     "node": ">=20.15"
@@ -33,12 +37,18 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
+      "dist/credentials/LineApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/LineSendText/LineSendText.node.js",
+      "dist/nodes/SendSticker/LineSendSticker.node.js",
+      "dist/nodes/SendImage/LineSendImage.node.ts",
+      "dist/nodes/SendVideo/LineSendVideo.node.ts",
+      "dist/nodes/SendAudio/LineSendAudio.node.ts",
+      "dist/nodes/SendLocation/LineSendLocation.node.ts",
+      "dist/nodes/SendImagemap/LineSendImagemap.node.ts",
+      "dist/nodes/SendTemplate/LineSendTemplate.node.ts",
+      "dist/nodes/SendFlex/LineSendFlex.node.ts"
     ]
   },
   "devDependencies": {
