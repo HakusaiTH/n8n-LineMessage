@@ -10,14 +10,14 @@
     "chatbot"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/<your-username>/n8n-nodes-line-messaging",
+  "homepage": "https://github.com/HakusaiTH/n8n_line_node/",
   "author": {
     "name": "Phoovadet Sinsangang",
     "email": "your-email@example.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<your-username>/n8n-nodes-line-messaging.git"
+    "url": "https://github.com/HakusaiTH/n8n_line_node/.git"
   },
   "engines": {
     "node": ">=20.15"
