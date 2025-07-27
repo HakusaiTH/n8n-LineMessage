@@ -136,14 +136,14 @@ npm install -g n8n
 mkdir -p ~/.n8n/custom
 cd ~/.n8n/custom
 npm init -y
-npm install @phoovadet.noobdev/n8n-LineMessage
+npm install n8n-LineMessage
 ```
 
 ### 🛠️ ติดตั้งแบบ local
 
 ```bash
 git clone https://github.com/HakusaiTH/n8n-LineMessage.git
-cd n8n-nodes-line-messaging
+cd n8n-LineMessage
 npm install
 npm run build
 npm link

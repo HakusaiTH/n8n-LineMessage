@@ -1,5 +1,5 @@
 {
-  "name": "@phoovadet.noobdev/n8n-LineMessage",
+  "name": "n8n-LineMessage",
   "version": "1.0.0",
   "description": "Custom nodes for LINE Messaging API to send text, stickers, images, videos, etc. via n8n workflows",
   "keywords": [
