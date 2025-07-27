@@ -1,4 +1,4 @@
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471190350-0e947020-9e8d-4638-943c-d3f2f6d535cb.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T092849Z&X-Amz-Expires=300&X-Amz-Signature=6b94671957aab2f80beae2b8802eed24668179e7ae782038826aa0666ac25710&X-Amz-SignedHeaders=host)
+![](https://github.com/user-attachments/assets/0e947020-9e8d-4638-943c-d3f2f6d535cb)
 
 
 # 💬 n8n-nodes-line-messaging
@@ -9,7 +9,7 @@
 
 ## 📦 Features
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471191445-92f072e7-0534-42d0-b0bc-82f0fcfb8ed4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T093546Z&X-Amz-Expires=300&X-Amz-Signature=2d14587beb49abce07ebb37a59fcd65e312c340c925d6f952bf2fca3038ae2a6&X-Amz-SignedHeaders=host)
+![](https://github.com/user-attachments/assets/92f072e7-0534-42d0-b0bc-82f0fcfb8ed4)
 
 ปลั๊กอินนี้รองรับการส่งข้อความประเภทต่าง ๆ ผ่าน LINE Messaging API ได้อย่างครบถ้วน:
 
@@ -176,8 +176,6 @@ n8n start
 
 ### 🔸 `LineSendText`
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471192692-3731813b-9977-4369-92ee-a9dda57b0fd2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T095653Z&X-Amz-Expires=300&X-Amz-Signature=41884bb2c04ca13992b49fe8f07b9a9066d01969829c4fdd4d9105b88607b3d6&X-Amz-SignedHeaders=host)
-
 * **หน้าที่:** ส่งข้อความตัวอักษรธรรมดา (Text Message) ผ่าน LINE Messaging API
 * **การใช้งาน:**
 
@@ -188,23 +186,19 @@ n8n start
 
 ### 🔸 `LineSendSticker`
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471193085-c36aaa28-86dd-419b-89ce-150ba5ed6ecc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T100317Z&X-Amz-Expires=300&X-Amz-Signature=8dfb5446746ebcab8ac6b32f3f76b29dd54dda820f2133085d3c59ebce6c718b&X-Amz-SignedHeaders=host)
-
 * **หน้าที่:** ส่งสติกเกอร์ (Sticker Message) ผ่าน LINE Messaging API
 * **การใช้งาน:**
 
   * กำหนด `packageId` และ `stickerId` ของสติกเกอร์ที่ต้องการส่ง
   * ตัวอย่าง: `packageId = 446` และ `stickerId = 1988`
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471191987-05934d32-0abf-4d6b-bc69-34f6cbedcedc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T094604Z&X-Amz-Expires=300&X-Amz-Signature=d179d4d507619415abef40fa63a042c6fcdfc28858545fd421dcdc67bcd6a803&X-Amz-SignedHeaders=host)
+![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471191987-05934d32-0abf-4d6b-bc69-34f6cbedcedc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T101819Z&X-Amz-Expires=300&X-Amz-Signature=c650b060c3c854ee227bd90dfc14fe53e07796e1d8c802fe1a12feb3cef4f724&X-Amz-SignedHeaders=host)
 
 > ℹ️ ดูรายละเอียดเพิ่มเติมได้ที่ [Stickers](https://developers.line.biz/en/docs/messaging-api/sticker-list/)
 
 ---
 
 ### 🔸 `LineSendImage`
-
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471192957-9a4e9fd8-b92f-4b12-9443-bf769c785778.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T100110Z&X-Amz-Expires=300&X-Amz-Signature=919be8d53b16be3b76a085f288a5b0dfcaa92ef2d96513ac450c82207bb232dc&X-Amz-SignedHeaders=host)
 
 * **หน้าที่:** ส่งภาพ (Image Message) ผ่าน LINE Messaging API
 * **การใช้งาน:**
@@ -218,8 +212,6 @@ n8n start
 
 ### 🔸 `LineSendVideo`
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471193217-d5ab83e2-5ba6-4ef0-8e53-1b141a8655c6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T100509Z&X-Amz-Expires=300&X-Amz-Signature=022288006d39a63049636dd4e206c5f8d0a47a569ad752bfa0b8c944d6816c71&X-Amz-SignedHeaders=host)
-
 * **หน้าที่:** ส่งวิดีโอ (Video Message) ผ่าน LINE Messaging API
 * **การใช้งาน:**
 
@@ -231,7 +223,6 @@ n8n start
 
 ### 🔸 `LineSendAudio`
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471193362-0a738cd5-5cb9-42ea-9379-b6964c1cffc0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T100710Z&X-Amz-Expires=300&X-Amz-Signature=569e2e0337dcfd1aa2d6097b166b17555b930fc90cfb77c4b8f5cbb7fcc8d8e8&X-Amz-SignedHeaders=host)
 
 * **หน้าที่:** ส่งไฟล์เสียง (Audio Message) ผ่าน LINE Messaging API
 * **การใช้งาน:**
@@ -242,8 +233,6 @@ n8n start
 ---
 
 ### 🔸 `LineSendLocation`
-
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471193429-b73c5827-d1f1-41fe-ab20-784fa28b135d.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T100805Z&X-Amz-Expires=300&X-Amz-Signature=f7634d4659560b3970e9c4536de71766d59ed649f81d254084596d0ac8c1cfe8&X-Amz-SignedHeaders=host)
 
 * **หน้าที่:** ส่งตำแหน่ง (Location Message) ผ่าน LINE Messaging API
 * **การใช้งาน:**
@@ -308,7 +297,7 @@ n8n start
 
 ส่งข้อความและสติกเกอร์ให้ผู้ใช้งานผ่าน LINE Bot อย่างง่ายดาย:
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471190349-958116d4-88de-4f6a-9983-9aa9fcccd844.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T092942Z&X-Amz-Expires=300&X-Amz-Signature=034510b058e9ffe89a179bdd38e9b0175dff9399b56a2c6c23ed87f2ece10498&X-Amz-SignedHeaders=host)
+![](https://github.com/user-attachments/assets/958116d4-88de-4f6a-9983-9aa9fcccd844)
 
 ---
 
