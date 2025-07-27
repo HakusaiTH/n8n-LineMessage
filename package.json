@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-line-messaging",
+  "name": "@phoovadet.noobdev/n8n-LineMessage",
   "version": "0.1.0",
   "description": "Custom nodes for LINE Messaging API to send text, stickers, images, videos, etc. via n8n workflows",
   "keywords": [
@@ -10,14 +10,14 @@
     "chatbot"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/HakusaiTH/n8n_line_node/",
+  "homepage": "https://github.com/HakusaiTH/n8n-LineMessage",
   "author": {
-    "name": "Phoovadet Sinsangang",
-    "email": "your-email@example.com"
+    "name": "Phoovadet noobdev",
+    "email": "phoovadetnoobdev@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/HakusaiTH/n8n_line_node/.git"
+    "url": "https://github.com/HakusaiTH/n8n-LineMessage.git"
   },
   "engines": {
     "node": ">=20.15"
