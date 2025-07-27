@@ -1,7 +1,7 @@
 {
-  "name": "n8n-line-message",
+  "name": "n8n-nodes-line-message",
   "version": "1.0.0",
-  "description": "Custom nodes for LINE Messaging API to send text, stickers, images, videos, etc. via n8n workflows",
+  "description": "n8n nodes for LINE Messaging API: send text, stickers, images, videos, and more via n8n workflows.",
   "keywords": [
     "n8n-community-node-package",
     "line",
@@ -12,7 +12,7 @@
   "license": "MIT",
   "homepage": "https://github.com/HakusaiTH/n8n-LineMessage",
   "author": {
-    "name": "Phoovadet noobdev",
+    "name": "Phoovadet Noobdev",
     "email": "phoovadetnoobdev@gmail.com"
   },
   "repository": {
@@ -22,14 +22,15 @@
   "engines": {
     "node": ">=20.15"
   },
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npx rimraf dist && tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
-    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+    "prepublishOnly": "npm run build && npm run lint"
   },
   "files": [
     "dist"
@@ -42,14 +43,14 @@
     "nodes": [
       "dist/nodes/LineSendText/LineSendText.node.js",
       "dist/nodes/SendSticker/LineSendSticker.node.js",
-      "dist/nodes/SendImage/LineSendImage.node.ts",
-      "dist/nodes/SendVideo/LineSendVideo.node.ts",
-      "dist/nodes/SendAudio/LineSendAudio.node.ts",
-      "dist/nodes/SendLocation/LineSendLocation.node.ts",
-      "dist/nodes/SendImagemap/LineSendImagemap.node.ts",
-      "dist/nodes/SendTemplate/LineSendTemplate.node.ts",
-      "dist/nodes/SendFlex/LineSendFlex.node.ts",
-      "dist/nodes/Webhook/LineWebhook.node.ts"
+      "dist/nodes/SendImage/LineSendImage.node.js",
+      "dist/nodes/SendVideo/LineSendVideo.node.js",
+      "dist/nodes/SendAudio/LineSendAudio.node.js",
+      "dist/nodes/SendLocation/LineSendLocation.node.js",
+      "dist/nodes/SendImagemap/LineSendImagemap.node.js",
+      "dist/nodes/SendTemplate/LineSendTemplate.node.js",
+      "dist/nodes/SendFlex/LineSendFlex.node.js",
+      "dist/nodes/Webhook/LineWebhook.node.js"
     ]
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "gulp": "^5.0.0",
     "prettier": "^3.5.3",
+    "rimraf": "^5.0.5",
     "typescript": "^5.8.2"
   },
   "peerDependencies": {

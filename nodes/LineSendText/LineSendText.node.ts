@@ -28,7 +28,7 @@ export class LineSendText implements INodeType {
         name: 'text',
         type: 'string',
         default: '',
-        description: 'ข้อความที่ต้องการส่ง',
+        description: 'Message to send',
         required: true,
       },
     ],

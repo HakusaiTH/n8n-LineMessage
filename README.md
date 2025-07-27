@@ -3,7 +3,7 @@
 
 # 💬 n8n-nodes-line-messaging
 
-ปลั๊กอินสำหรับเชื่อมต่อ [LINE Messaging API](https://developers.line.biz/en/docs/messaging-api/) กับ [n8n](https://n8n.io/) เพื่อส่งข้อความแบบต่าง ๆ เช่น ข้อความ, สติกเกอร์, วิดีโอ, และเทมเพลตผ่าน LINE ได้อย่างง่ายดาย
+Plug-in to connect [LINE Messaging API](https://developers.line.biz/en/docs/messaging-api/) to [n8n](https://n8n.io/) to easily send various types of messages such as text, stickers, videos, and templates via LINE.
 
 ---
 
@@ -11,126 +11,125 @@
 
 ![](https://github.com/user-attachments/assets/92f072e7-0534-42d0-b0bc-82f0fcfb8ed4)
 
-ปลั๊กอินนี้รองรับการส่งข้อความประเภทต่าง ๆ ผ่าน LINE Messaging API ได้อย่างครบถ้วน:
+This plug-in fully supports sending various types of messages via LINE Messaging API:
 
-* ✅ **Text Message** — ส่งข้อความตัวอักษรธรรมดา
-* ✅ **Sticker Message** — ส่งสติกเกอร์จาก LINE (ต้องระบุ `packageId` และ `stickerId`)
-* ✅ **Image Message** — ส่งรูปภาพจาก URL (`originalContentUrl` และ `previewImageUrl`)
-* ✅ **Video Message** — ส่งวิดีโอจาก URL พร้อมภาพพรีวิว
-* ✅ **Audio Message** — ส่งไฟล์เสียงจาก URL
-* ✅ **Location Message** — แชร์ตำแหน่ง (ชื่อสถานที่, ที่อยู่, ละติจูด, ลองจิจูด)
-* ✅ **Imagemap Message** — ส่งภาพแบบอินเตอร์แอคทีฟที่สามารถคลิกโต้ตอบได้
-* ✅ **Template Message** — ข้อความที่มีปุ่มโต้ตอบ เช่น Confirm หรือ Buttons
-* ✅ **Flex Message** — ออกแบบข้อความได้อย่างยืดหยุ่นด้วย Flex Layout (คล้าย HTML + JSON)
-* ✅ ใช้ Expression จาก Node อื่นใน Workflow ได้
+* ✅ **Text Message** — Send plain text messages
+* ✅ **Sticker Message** — Send stickers from LINE (must specify `packageId` and `stickerId`)
+* ✅ **Image Message** — Send images from URL (`originalContentUrl` and `previewImageUrl`)
+* ✅ **Video Message** — Send videos from URL With preview images
+* ✅ **Audio Message** — Send audio files from a URL
+* ✅ **Location Message** — Share location (location name, address, latitude, longitude)
+* ✅ **Imagemap Message** — Send interactive images that can be clicked
+* ✅ **Template Message** — Messages with interactive buttons, such as Confirm or Buttons
+* ✅ **Flex Message** — Design messages flexibly with Flex Layout (similar to HTML + JSON)
+* ✅ Use expressions from other nodes in the workflow
 
-
-> ℹ️ ดูรายละเอียดเพิ่มเติมได้ที่ [LINE Message Types Documentation](https://developers.line.biz/en/reference/messaging-api/#message-objects)
-
----
-
-ได้เลย! ด้านล่างนี้คือ README ที่มีการเสริมเนื้อหาส่วน **"การสร้าง และตั้งค่า LINE Official Account"** และ **"การหา ID ของห้องแชท"** เข้าไปอย่างกลมกลืน พร้อมจัดรูปแบบให้อ่านง่าย:
+> ℹ️ For more details, see [LINE Message Types Documentation](https://developers.line.biz/en/reference/messaging-api/#message-objects)
 
 ---
 
-## 🛠️ การสร้าง และตั้งค่า LINE Official Account
-
-เพื่อใช้งาน LINE Messaging API คุณต้องสร้าง LINE Official Account และตั้งค่าต่าง ๆ ดังนี้:
-
-### 1. สร้าง LINE Official Account
-
-1. เข้าไปที่ [https://account.line.biz/](https://account.line.biz/) และเข้าสู่ระบบด้วยบัญชี LINE
-2. คลิกปุ่ม **สร้างใหม่**
-3. กรอกข้อมูลให้ครบถ้วน แล้วกด **ตกลง**
-4. เมื่อระบบแจ้งว่าเสร็จสิ้น ให้กด **ไป LINE Official Account Manager**
-
-### 2. ตั้งค่าโปรไฟล์เบื้องต้น
-
-1. กดยอมรับ **ข้อกำหนดการใช้งาน**
-2. ปิดกล่อง “ยินดีต้อนรับ” โดยกด `X` มุมขวาบน
-3. เปลี่ยนรูปประจำตัวโดยกด **แก้ไข** > เลือกรูป > **บันทึก**
-4. เมื่อมีหน้าต่างแจ้งเตือน ให้กด **บันทึก**
-
-### 3. เปิดใช้งานการเข้าร่วมกลุ่ม
-
-1. เลื่อนมาที่หัวข้อ **การใช้ฟีเจอร์**
-2. กด **อนุญาตให้เข้าร่วมกลุ่ม** > ยืนยันด้วยการกด **ตกลง**
-
-### 4. เปิดใช้งาน Messaging API
-
-1. ที่เมนูด้านขวา กด **Messaging API**
-2. กดปุ่ม **ใช้ Messaging API**
-3. สร้างผู้ดูแลบัญชี (Provider) โดยตั้งชื่อ และกด **ยอมรับ**
-4. กด **ตกลง** เพื่อยืนยัน
-5. หน้าต่างสรุปข้อมูลจะปรากฏ กด **ตกลง**
+Here you go! The following is a README that seamlessly integrates the **"Creating and Setting Up a LINE Official Account"** and **"Finding a Chat Room ID"** sections. Formatted for easy reading:
 
 ---
 
-## ⚙️ ตั้งค่าใน LINE Developers Console
+## 🛠️ Creating and setting up LINE Official Account
 
-### 1. เข้าสู่ LINE Developers Console
+To use the LINE Messaging API, you need to create a LINE Official Account and set the following settings:
 
-1. ไปที่ [https://developers.line.biz/](https://developers.line.biz/)
-2. คลิกปุ่ม **Console**
-3. เลือกชื่อ Provider ที่สร้างไว้
-4. คลิกที่ชื่อ Channel ที่คุณสร้างไว้
+### 1. Create a LINE Official Account
 
-### 2. ออก Channel Access Token
+1. Go to [https://account.line.biz/](https://account.line.biz/) and log in with your LINE account.
+2. Click the **Create New** button.
+3. Fill in all the information and press **OK**.
+4. When the system notifies you that you are done, press **Go to LINE Official Account Manager**.
 
-1. เข้าสู่เมนู **Messaging API**
-2. เลื่อนลงมาหาหัวข้อ **Channel access token**
-3. กดปุ่ม **Issue**
-4. คัดลอก Token ที่ได้และเก็บไว้ (ใช้ใน Credential ของ n8n)
+### 2. Set up your basic profile.
+
+1. Press to accept the **Terms of Use**.
+2. Close the “Welcome” box by pressing the `X` in the upper right corner.
+3. Change your profile picture by pressing **Edit** > Select a picture > **Save**.
+4. When the notification window appears, press **Save**.
+
+### 3. Enable group participation.
+
+1. Scroll to the topic **Using the feature**
+2. Click **Allow to join the group** > Confirm by clicking **OK**
+
+### 4. Enable Messaging API
+
+1. On the right menu, click **Messaging API**
+2. Click **Use Messaging API**
+3. Create an account administrator (Provider) by naming it and clicking **Accept**
+4. Click **OK** to confirm
+5. A summary window will appear, click **OK**
 
 ---
 
-## 🆔 การหา User ID / Group ID สำหรับส่งข้อความ
+## ⚙️ Setting in LINE Developers Console
 
-### วิธีดู User ID ด้วย Webhook
+### 1. Access the LINE Developers Console
 
-1. เข้าไปที่ [https://typedwebhook.tools/](https://typedwebhook.tools/) และคัดลอกลิงก์ Webhook
+1. Go to [https://developers.line.biz/](https://developers.line.biz/)
+2. Click the **Console** button
+3. Select the Provider name you created
+4. Click the Channel name you created
 
-2. วางลิงก์ลงในช่อง **Webhook URL** ของ LINE Developers Console > แล้วกด **บันทึก**
+### 2. Exit Channel Access Token
 
-3. ส่งข้อความใด ๆ ไปยังแชทของ LINE OA ที่สร้างไว้
+1. Access the **Messaging API** menu
+2. Scroll down to find the **Channel access token** topic
+3. Click the button **Issue**
+4. Copy the obtained Token and save it (use in n8n Credential)
 
-4. กลับมาที่ typedwebhook.tools:
+---
 
-   * กดดูข้อมูลที่ขึ้นมา
-   * เลือกดูในแท็บ **JSON**
-   * หาค่า `source.userId` เพื่อใช้เป็น **UID** ในการส่งข้อความส่วนตัว
+## 🆔 Find User ID / Group ID for sending messages
 
-### วิธีดู Group ID สำหรับส่งเข้ากลุ่ม
+### How to view User ID with Webhook
 
-1. เชิญบัญชี LINE OA เข้าร่วมกลุ่ม LINE ที่ต้องการ
-2. ส่งข้อความใด ๆ ในกลุ่ม
-3. กลับมาที่ typedwebhook.tools:
+1. Go to [https://typedwebhook.tools/](https://typedwebhook.tools/) and copy the Webhook link
 
-   * จะเห็นรายการใหม่ (#2)
-   * กดดูใน **JSON**
-   * หาค่า `source.groupId` เพื่อใช้ในการส่งข้อความเข้า **กลุ่ม**
+2. Paste the link into the **Webhook URL** field of LINE Developers Console > then press **Save**
+
+3. Send any message to the created LINE OA chat
+
+4. Return to typedwebhook.tools:
+
+* Press to view the data that appears
+* Select to view in the **JSON** tab
+* Find the `source.userId` value to use as **UID** for sending private messages
+
+### How to view the Group ID for sending to groups
+
+1. Invite LINE OA accounts to join the desired LINE group
+2. Send any message in the group
+3. Return to typedwebhook.tools:
+
+* You will see a new entry (#2)
+* Click to look in **JSON**
+* Find the `source.groupId` value to use to send messages to **groups**
 
 ---
 
 ## 📌 Prerequisites
 
-### 1. ติดตั้ง Node.js และ n8n
+### 1. Install Node.js and n8n
 ```bash
 npm install -g n8n
 ````
 
-### 2. สร้าง LINE Channel
+### 2. Create a LINE Channel
 
-* ไปที่ [LINE Developers Console](https://developers.line.biz/console/)
-* สร้าง **Messaging API Channel**
-* เปิดใช้งาน **Bot**
-* เก็บค่า **Channel Access Token** และ **User ID (UID)**
+* Go to [LINE Developers Console](https://developers.line.biz/console/)
+* Create **Messaging API Channel**
+* Enable **Bot**
+* Collect **Channel Access Token** and **User ID (UID)**
 
 ---
 
 ## 🚀 Installation
 
-### ✅ ติดตั้งผ่าน npm (แนะนำ)
+### ✅ Install via npm (recommended)
 
 ```bash
 mkdir -p ~/.n8n/custom
@@ -139,7 +138,7 @@ npm init -y
 npm install n8n-LineMessage
 ```
 
-### 🛠️ ติดตั้งแบบ local
+### 🛠️ Local installation
 
 ```bash
 git clone https://github.com/HakusaiTH/n8n-LineMessage.git
@@ -148,14 +147,14 @@ npm install
 npm run build
 npm link
 
-# เชื่อมเข้ากับ custom folder ของ n8n
+# Connect to n8n's custom folder
 mkdir -p ~/.n8n/custom
 cd ~/.n8n/custom
 npm init -y
 npm link n8n-LineMessage
 ```
 
-จากนั้นรัน:
+Then run:
 
 ```bash
 n8n start
@@ -165,143 +164,142 @@ n8n start
 
 ## 🔐 LINE API Credentials Setup
 
-1. ไปที่เมนู **Credentials** บน n8n
-2. สร้าง Credential ใหม่:
+1. Go to the **Credentials** menu on n8n
+2. Create a new Credential:
 
-   * `accessToken` = Channel Access Token
+* `accessToken` = Channel Access Token
 
 ---
 
-## 🧾 วิธีใช้งาน Node ต่าง ๆ
+## 🧾 How to use Node Various
 
 ### 🔸 `LineSendText`
 
-* **หน้าที่:** ส่งข้อความตัวอักษรธรรมดา (Text Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
+* **Function:** Send plain text messages (Text Message) via LINE Messaging API
+* **Usage:**
 
-  * กรอกข้อความที่ต้องการส่ง
-  * สามารถใช้ Expression เช่น `{{ $json.message }}` เพื่อดึงข้อความจาก Node ก่อนหน้า
+* Enter the message you want to send
+* You can use Expressions such as `{{ $json.message }}` to retrieve messages from the previous Node
 
 ---
 
 ### 🔸 `LineSendSticker`
 
-* **หน้าที่:** ส่งสติกเกอร์ (Sticker Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
+* **Function:** Send stickers (Sticker Message) via LINE Messaging API
+* **Usage:**
 
-  * กำหนด `packageId` และ `stickerId` ของสติกเกอร์ที่ต้องการส่ง
-  * ตัวอย่าง: `packageId = 446` และ `stickerId = 1988`
+* Set the `packageId` and `stickerId` of the stickers you want to send
+* Example: `packageId = 446` and `stickerId = 1988`
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471191987-05934d32-0abf-4d6b-bc69-34f6cbedcedc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T101819Z&X-Amz-Expires=300&X-Amz-Signature=c650b060c3c854ee227bd90dfc14fe53e07796e1d8c802fe1a12feb3cef4f724&X-Amz-SignedHeaders=host)
+![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471191987-05934d32-0abf-4d6b-bc69-34f6cbedcedc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4 ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T101819Z&X-Amz-Expires=300&X-Amz-Signature=c650b060c3c854ee227bd90dfc14fe53e07796e1d8c802fe1a12feb3cef4f724&X-Amz-SignedHeaders=host)
 
-> ℹ️ ดูรายละเอียดเพิ่มเติมได้ที่ [Stickers](https://developers.line.biz/en/docs/messaging-api/sticker-list/)
+> ℹ️ For more details, please visit [Stickers](https://developers.line.biz/en/docs/messaging-api/sticker-list/)
 
 ---
 
 ### 🔸 `LineSendImage`
 
-* **หน้าที่:** ส่งภาพ (Image Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
+* **Function:** Send images (Image Message) via LINE Messaging API
+* **Usage:**
 
-  * กรอก URL ของภาพที่ต้องการส่งในช่อง `originalContentUrl`
-  * กรอก URL ของภาพตัวอย่างในช่อง `previewImageUrl` (แสดงในแชทก่อนกดดูภาพเต็ม)
-* **หมายเหตุ:** URL ต้องเป็น HTTPS เท่านั้น
-* **เหมาะกับ:** ส่งภาพประกอบข่าวสาร, โปรโมชั่น, หรือรูปภาพทั่วไป
+* Enter the URL of the image you want to send in the `originalContentUrl` field
+* Enter the URL of the preview image in the `previewImageUrl` field (shown in the chat before clicking to view the full image)
+* **Note:** The URL must be HTTPS only
+* **Suitable for:** Sending news illustrations, promotions, or general images
 
 ---
 
 ### 🔸 `LineSendVideo`
 
-* **หน้าที่:** ส่งวิดีโอ (Video Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
+* **Function:** Send videos (Video Message) via LINE Messaging API
+* **Usage:**
 
-  * กรอก URL ของวิดีโอในช่อง `originalContentUrl`
-  * กรอก URL ของภาพพรีวิวในช่อง `previewImageUrl`
-* **หมายเหตุ:** URL ต้องเป็น HTTPS เท่านั้น
+* Enter the video URL in the `originalContentUrl` field
+* Enter the preview image URL in the `previewImageUrl`
+* **Note:** URL must be HTTPS only
 
 ---
 
 ### 🔸 `LineSendAudio`
 
+* **Function:** Send audio files (Audio Message) via LINE Messaging API
+* **Usage:**
 
-* **หน้าที่:** ส่งไฟล์เสียง (Audio Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
-
-  * กรอก URL ของไฟล์เสียง (MP3 หรือรูปแบบที่รองรับ)
-  * กำหนดความยาวไฟล์เสียง (duration) เป็นหน่วยมิลลิวินาที
+* Enter the URL of the audio file (MP3 or supported format)
+* Set the duration of the audio file (duration) in milliseconds
 
 ---
 
 ### 🔸 `LineSendLocation`
 
-* **หน้าที่:** ส่งตำแหน่ง (Location Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
+* **Function:** Send location (Location Message) via LINE Messaging API
+* **Usage:**
 
-  * กรอกชื่อสถานที่ (title)
-  * ที่อยู่ (address)
-  * ละติจูด (latitude)
-  * ลองจิจูด (longitude)
+* Enter the location name (title)
+* Address (address)
+* Latitude (latitude)
+* Longitude (longitude)
 
 ---
 
 ### 🔸 `LineSendImagemap`
 
-* **หน้าที่:** ส่งภาพแบบอินเตอร์แอคทีฟ (Imagemap Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
+* **Function:** Send interactive images (Imagemap Message) via LINE Messaging API
+* **Usage:**
 
-  * กรอก URL ของภาพ (imagemap)
-  * กำหนดขนาดของภาพและโซนที่ให้ผู้ใช้คลิกได้ (action areas)
-  * กำหนดว่าปุ่มแต่ละโซนจะส่งข้อความอะไร หรือเปิด URL อะไร
+* Enter the URL Image (imagemap)
+* Set the size of the image and the user-clickable zones (action areas)
+* Set which message each button zone will send or which URL will open
 
 ---
 
 ### 🔸 `LineSendTemplate`
 
-* **หน้าที่:** ส่งข้อความเทมเพลต (Template Message) ผ่าน LINE Messaging API
-* **การใช้งาน:**
+* **Function:** Send a template message (Template Message) via LINE Messaging API
+* **Usage:**
 
-  * ตั้งค่า `title`, `text`, และ `thumbnailImageUrl`
-  * เพิ่มปุ่ม Action หลายปุ่ม เช่น
+* Set `title`, `text`, and `thumbnailImageUrl`
 
-    * Message (ส่งข้อความกลับ)
-    * Postback (ส่งข้อมูลแบบซ่อน)
-    * URI (เปิดเว็บเพจ)
+* Add multiple Action buttons, such as
+
+* Message (send a message back)
+* Postback (send hidden data)
+* URI (open a webpage)
 
 ---
 
 ### 🔸 `LineSendFlex`
 
-* **หน้าที่:** ส่งข้อความแบบ Flex Message ซึ่งเป็นข้อความที่ออกแบบได้อิสระ (คล้ายกับ HTML + JSON layout)
-* **การใช้งาน:**
+* **Function:** Send a Flex Message, which is a freely designed message (similar to HTML + JSON layout)
+* **Usage:**
 
-  * ส่ง JSON structure ของ Flex Message ที่กำหนดเอง
-  * สามารถออกแบบรูปแบบข้อความได้ซับซ้อน เช่น บล็อกข้อความ รูปภาพ ปุ่ม กรอบ และอื่น ๆ
+* Send a customized JSON structure of Flex Message
+* You can design a complex message format, such as text blocks, images, buttons, frames, and more
 
 ---
 
 ### 🔸 `LineWebhook`
 
-* **หน้าที่:** รับข้อความหรือ event ต่าง ๆ ที่เกิดขึ้นจาก LINE Platform ผ่าน Webhook
-* **การใช้งาน:**
+* **Function:** Receive messages or events generated by the LINE Platform via Webhook
+* **Usage:**
 
-  * ใช้ Node นี้เพื่อตั้งค่า webhook endpoint ใน n8n
-  * รอรับข้อความ, การกดปุ่ม, การติดตาม หรือเหตุการณ์ต่าง ๆ ที่เกิดขึ้นใน LINE
+* Use this Node to set up a webhook endpoint in n8n
+* Wait for messages, button presses, tracking, or events that occur in LINE
 ---
 
-ถ้าต้องการตัวอย่างโค้ด หรือวิธีตั้งค่ารายละเอียดในแต่ละ Node เพิ่มเติม แจ้งได้ครับ!
-
+If you need a sample code or more details on how to set up each Node, please let me know!
 
 ---
 
-## 📸 ตัวอย่าง Workflow
+## 📸 Workflow example
 
-ส่งข้อความและสติกเกอร์ให้ผู้ใช้งานผ่าน LINE Bot อย่างง่ายดาย:
+Easily send messages and stickers to users via LINE Bot:
 
 ![](https://github.com/user-attachments/assets/958116d4-88de-4f6a-9983-9aa9fcccd844)
 
 ---
 
-## 📚 อ้างอิง
+## 📚 References
 
 * [LINE Messaging API Docs](https://developers.line.biz/en/docs/messaging-api/)
 * [n8n Custom Nodes](https://docs.n8n.io/integrations/creating-nodes/)

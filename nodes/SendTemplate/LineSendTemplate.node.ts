@@ -32,14 +32,14 @@ export class LineSendTemplate implements INodeType {
         displayName: 'Title',
         name: 'title',
         type: 'string',
-        default: 'เมนูหลัก',
+				default: 'Main menu',
         required: true,
       },
       {
         displayName: 'Text',
         name: 'text',
         type: 'string',
-        default: 'เลือกหนึ่งตัวเลือกด้านล่าง:',
+				default: 'Select one option below:',
         required: true,
       },
       {
