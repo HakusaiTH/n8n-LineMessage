@@ -48,7 +48,8 @@
       "dist/nodes/SendLocation/LineSendLocation.node.ts",
       "dist/nodes/SendImagemap/LineSendImagemap.node.ts",
       "dist/nodes/SendTemplate/LineSendTemplate.node.ts",
-      "dist/nodes/SendFlex/LineSendFlex.node.ts"
+      "dist/nodes/SendFlex/LineSendFlex.node.ts",
+      "dist/nodes/Webhook/LineWebhook.node.ts"
     ]
   },
   "devDependencies": {

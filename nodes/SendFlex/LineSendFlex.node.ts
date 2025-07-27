@@ -21,6 +21,14 @@ export class LineSendFlex implements INodeType {
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
       {
+        displayName: 'User ID',
+        name: 'userId',
+        type: 'string',
+        default: '',
+        description: 'Target User ID for push messages',
+        required: true,
+      },
+      {
         displayName: 'Alt Text',
         name: 'altText',
         type: 'string',
@@ -40,12 +48,22 @@ export class LineSendFlex implements INodeType {
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string; userId: string };
+    const cred = await this.getCredentials('lineApi') as { accessToken: string };
+    const accessToken = cred.accessToken;
+
+    const userId = this.getNodeParameter('userId', 0) as string;
     const altText = this.getNodeParameter('altText', 0) as string;
-    const flexJson = this.getNodeParameter('flexJson', 0) as object;
+    const flexJsonStr = this.getNodeParameter('flexJson', 0) as string;
+    let flexJson: Record<string, any>;
+
+    try {
+      flexJson = typeof flexJsonStr === 'string' ? JSON.parse(flexJsonStr) : flexJsonStr;
+    } catch (error) {
+      throw new NodeOperationError(this.getNode(), 'Invalid JSON in Flex JSON parameter');
+    }
 
     const payload = {
-      to: cred.userId,
+      to: userId,
       messages: [
         {
           type: 'flex',
@@ -60,16 +78,30 @@ export class LineSendFlex implements INodeType {
         method: 'POST',
         url: 'https://api.line.me/v2/bot/message/push',
         headers: {
-          Authorization: `Bearer ${cred.accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         body: payload,
         json: true,
       });
 
-      return this.prepareOutputData([{ json: { response } }]);
+      return this.prepareOutputData([
+        {
+          json: {
+            success: true,
+            response,
+            sentPayload: payload,
+          },
+        },
+      ]);
+
     } catch (error) {
-      throw new NodeOperationError(this.getNode(), error);
+      throw new NodeOperationError(this.getNode(), {
+        message: 'LINE API Error',
+        description: (error as any)?.message || 'Unknown error',
+        payloadSent: payload,
+        rawError: error,
+      });
     }
   }
 }

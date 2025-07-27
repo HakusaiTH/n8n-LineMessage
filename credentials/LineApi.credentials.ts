@@ -13,18 +13,11 @@ export class LineApi implements ICredentialType {
       typeOptions: { password: true },
       description: 'LINE Messaging API Channel Access Token',
     },
-    {
-      displayName: 'User ID',
-      name: 'userId',
-      type: 'string',
-      default: '',
-      description: 'Target User ID for push messages',
-    },
   ];
   test: ICredentialTestRequest = {
     request: {
       method: 'GET',
-      url: 'https://api.line.me/v2/bot/profile/{{$credentials.userId}}',
+      url: 'https://api.line.me/v2/bot/info',
       headers: { Authorization: 'Bearer {{$credentials.accessToken}}' },
     },
   };

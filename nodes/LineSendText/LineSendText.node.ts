@@ -16,6 +16,14 @@ export class LineSendText implements INodeType {
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
       {
+        displayName: 'User ID',
+        name: 'userId',
+        type: 'string',
+        default: '',
+        description: 'Target User ID for push messages',
+        required: true,
+      },
+      {
         displayName: 'Text',
         name: 'text',
         type: 'string',
@@ -27,21 +35,28 @@ export class LineSendText implements INodeType {
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string; userId: string };
+    const credentials = await this.getCredentials('lineApi') as { accessToken: string };
+    const accessToken = credentials.accessToken;
     const text = this.getNodeParameter('text', 0) as string;
-    const payload = { to: cred.userId, messages: [{ type: 'text', text }] };
+    const userId = this.getNodeParameter('userId', 0) as string;
+
+    const payload = {
+      to: userId,
+      messages: [{ type: 'text', text }],
+    };
 
     try {
       const response = await this.helpers.httpRequest({
         method: 'POST',
         url: 'https://api.line.me/v2/bot/message/push',
         headers: {
-          Authorization: `Bearer ${cred.accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         body: payload,
         json: true,
       });
+
       return this.prepareOutputData([{ json: { response } }]);
     } catch (error) {
       throw new NodeOperationError(this.getNode(), error);

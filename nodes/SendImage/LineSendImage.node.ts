@@ -21,6 +21,14 @@ export class LineSendImage implements INodeType {
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
       {
+        displayName: 'User ID',
+        name: 'userId',
+        type: 'string',
+        default: '',
+        description: 'Target User ID for push messages',
+        required: true,
+      },
+      {
         displayName: 'Original Image URL',
         name: 'originalContentUrl',
         type: 'string',
@@ -40,12 +48,13 @@ export class LineSendImage implements INodeType {
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string; userId: string };
+    const cred = await this.getCredentials('lineApi') as { accessToken: string };
+    const userId = this.getNodeParameter('userId', 0) as string;
     const originalContentUrl = this.getNodeParameter('originalContentUrl', 0) as string;
     const previewImageUrl = this.getNodeParameter('previewImageUrl', 0) as string;
 
     const payload = {
-      to: cred.userId,
+      to: userId,
       messages: [
         {
           type: 'image',

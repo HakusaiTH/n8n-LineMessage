@@ -21,6 +21,14 @@ export class LineSendAudio implements INodeType {
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
       {
+        displayName: 'User ID',
+        name: 'userId',
+        type: 'string',
+        default: '',
+        description: 'Target User ID for push messages',
+        required: true,
+      },
+      {
         displayName: 'Audio URL',
         name: 'originalContentUrl',
         type: 'string',
@@ -40,12 +48,15 @@ export class LineSendAudio implements INodeType {
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string; userId: string };
+    const credentials = await this.getCredentials('lineApi') as { accessToken: string };
+    const accessToken = credentials.accessToken;
+
+    const userId = this.getNodeParameter('userId', 0) as string;
     const originalContentUrl = this.getNodeParameter('originalContentUrl', 0) as string;
     const duration = this.getNodeParameter('duration', 0) as number;
 
     const payload = {
-      to: cred.userId,
+      to: userId,
       messages: [
         {
           type: 'audio',
@@ -60,7 +71,7 @@ export class LineSendAudio implements INodeType {
         method: 'POST',
         url: 'https://api.line.me/v2/bot/message/push',
         headers: {
-          Authorization: `Bearer ${cred.accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         body: payload,

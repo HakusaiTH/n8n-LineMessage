@@ -21,6 +21,14 @@ export class LineSendTemplate implements INodeType {
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
       {
+        displayName: 'User ID',
+        name: 'userId',
+        type: 'string',
+        default: '',
+        required: true,
+        description: 'LINE user ID to send the template message to',
+      },
+      {
         displayName: 'Title',
         name: 'title',
         type: 'string',
@@ -85,12 +93,15 @@ export class LineSendTemplate implements INodeType {
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string; userId: string };
+    const cred = await this.getCredentials('lineApi') as { accessToken: string };
 
+    const userId = this.getNodeParameter('userId', 0) as string;
     const title = this.getNodeParameter('title', 0) as string;
     const text = this.getNodeParameter('text', 0) as string;
     const thumbnailImageUrl = this.getNodeParameter('thumbnailImageUrl', 0) as string;
-    const actionsInput = this.getNodeParameter('actions', 0) as { action: Array<{ type: string; label: string; value: string }> };
+    const actionsInput = this.getNodeParameter('actions', 0) as {
+      action: Array<{ type: string; label: string; value: string }>;
+    };
 
     const actions = actionsInput.action.map((a) => {
       if (a.type === 'message') {
@@ -100,13 +111,12 @@ export class LineSendTemplate implements INodeType {
       } else if (a.type === 'uri') {
         return { type: 'uri', label: a.label, uri: a.value };
       } else {
-        // Fallback for unknown types
         return { type: a.type, label: a.label, value: a.value };
       }
     });
 
     const payload = {
-      to: cred.userId,
+      to: userId,
       messages: [
         {
           type: 'template',

@@ -21,6 +21,14 @@ export class LineSendSticker implements INodeType {
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
       {
+        displayName: 'User ID',
+        name: 'userId',
+        type: 'string',
+        default: '',
+        description: 'LINE user ID to send the sticker to',
+        required: true,
+      },
+      {
         displayName: 'Package ID',
         name: 'packageId',
         type: 'string',
@@ -40,12 +48,14 @@ export class LineSendSticker implements INodeType {
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string; userId: string };
+    const cred = await this.getCredentials('lineApi') as { accessToken: string };
+
+    const userId = this.getNodeParameter('userId', 0) as string;
     const packageId = this.getNodeParameter('packageId', 0) as string;
     const stickerId = this.getNodeParameter('stickerId', 0) as string;
 
     const payload = {
-      to: cred.userId,
+      to: userId,
       messages: [
         {
           type: 'sticker',

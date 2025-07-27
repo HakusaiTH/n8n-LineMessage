@@ -21,6 +21,14 @@ export class LineSendVideo implements INodeType {
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
       {
+        displayName: 'User ID',
+        name: 'userId',
+        type: 'string',
+        default: '',
+        description: 'LINE user ID to send the video to',
+        required: true,
+      },
+      {
         displayName: 'Video URL',
         name: 'originalContentUrl',
         type: 'string',
@@ -40,12 +48,14 @@ export class LineSendVideo implements INodeType {
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string; userId: string };
+    const cred = await this.getCredentials('lineApi') as { accessToken: string };
+
+    const userId = this.getNodeParameter('userId', 0) as string;
     const originalContentUrl = this.getNodeParameter('originalContentUrl', 0) as string;
     const previewImageUrl = this.getNodeParameter('previewImageUrl', 0) as string;
 
     const payload = {
-      to: cred.userId,
+      to: userId,
       messages: [
         {
           type: 'video',
