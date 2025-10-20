@@ -191,8 +191,6 @@ n8n start
 * Set the `packageId` and `stickerId` of the stickers you want to send
 * Example: `packageId = 446` and `stickerId = 1988`
 
-![](https://github-production-user-asset-6210df.s3.amazonaws.com/104154862/471191987-05934d32-0abf-4d6b-bc69-34f6cbedcedc.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4 ZA%2F20250727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250727T101819Z&X-Amz-Expires=300&X-Amz-Signature=c650b060c3c854ee227bd90dfc14fe53e07796e1d8c802fe1a12feb3cef4f724&X-Amz-SignedHeaders=host)
-
 > ℹ️ For more details, please visit [Stickers](https://developers.line.biz/en/docs/messaging-api/sticker-list/)
 
 ---
@@ -304,6 +302,14 @@ Easily send messages and stickers to users via LINE Bot:
 * [LINE Messaging API Docs](https://developers.line.biz/en/docs/messaging-api/)
 * [n8n Custom Nodes](https://docs.n8n.io/integrations/creating-nodes/)
 * [LINE Sticker ID List](https://developers.line.biz/en/docs/messaging-api/sticker-list/)
+
+---
+
+---
+
+## 🧑‍💻 Maintainer
+
+Developed by **Phoovadet Noobdev**
 
 ---
 

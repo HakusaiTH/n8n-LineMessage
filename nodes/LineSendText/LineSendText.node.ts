@@ -1,5 +1,12 @@
 import {
-  IExecuteFunctions, INodeType, INodeTypeDescription, INodeExecutionData, NodeOperationError, NodeConnectionType,
+  IExecuteFunctions,
+  INodeType,
+  INodeTypeDescription,
+  INodeExecutionData,
+  NodeOperationError,
+  NodeConnectionType,
+  IHttpRequestMethods,
+  IHttpRequestOptions,
 } from 'n8n-workflow';
 
 export class LineSendText implements INodeType {
@@ -9,7 +16,7 @@ export class LineSendText implements INodeType {
     icon: 'file:line.svg',
     group: ['transform'],
     version: 1,
-    description: 'Send text message via LINE',
+    description: 'Send a text message via LINE',
     defaults: { name: 'Send Text' },
     inputs: [NodeConnectionType.Main],
     outputs: [NodeConnectionType.Main],
@@ -20,7 +27,8 @@ export class LineSendText implements INodeType {
         name: 'userId',
         type: 'string',
         default: '',
-        description: 'Target User ID for push messages',
+        placeholder: 'e.g. Uxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+        description: 'LINE user ID to push the message to',
         required: true,
       },
       {
@@ -28,38 +36,74 @@ export class LineSendText implements INodeType {
         name: 'text',
         type: 'string',
         default: '',
+        placeholder: 'e.g. Hello from n8n',
         description: 'Message to send',
         required: true,
+      },
+      {
+        displayName: 'Simplify',
+        name: 'simplify',
+        type: 'boolean',
+        default: true,
+        description: 'Whether to return a simplified version of the response instead of the raw data',
+      },
+      {
+        displayName: 'Options',
+        name: 'options',
+        type: 'collection',
+        default: {},
+        placeholder: 'Add option',
+        options: [
+          {
+            displayName: 'Timeout',
+            name: 'timeout',
+            type: 'number',
+            default: 15000,
+            description: 'Request timeout in milliseconds',
+          },
+        ],
       },
     ],
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const credentials = await this.getCredentials('lineApi') as { accessToken: string };
-    const accessToken = credentials.accessToken;
-    const text = this.getNodeParameter('text', 0) as string;
-    const userId = this.getNodeParameter('userId', 0) as string;
+    const items = this.getInputData();
+    const out: INodeExecutionData[] = [];
+    const url = 'https://api.line.me/v2/bot/message/push';
 
-    const payload = {
-      to: userId,
-      messages: [{ type: 'text', text }],
-    };
+    for (let i = 0; i < items.length; i++) {
+      try {
+        const userId = this.getNodeParameter('userId', i) as string;
+        const text = this.getNodeParameter('text', i) as string;
+        const simplify = this.getNodeParameter('simplify', i) as boolean;
+        const { timeout = 15000 } = (this.getNodeParameter('options', i, {}) as { timeout?: number });
 
-    try {
-      const response = await this.helpers.httpRequest({
-        method: 'POST',
-        url: 'https://api.line.me/v2/bot/message/push',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: payload,
-        json: true,
-      });
+        const payload = { to: userId, messages: [{ type: 'text', text }] };
 
-      return this.prepareOutputData([{ json: { response } }]);
-    } catch (error) {
-      throw new NodeOperationError(this.getNode(), error);
+        const req: IHttpRequestOptions = {
+          method: 'POST' as IHttpRequestMethods,
+          url,
+          json: true,
+          body: payload,
+          timeout,
+        };
+
+        const res = await this.helpers.httpRequestWithAuthentication.call(this, 'lineApi', req);
+
+        out.push({
+          json: simplify ? { pushed: true, to: userId, type: 'text' } : { response: res, sentPayload: payload },
+          pairedItem: { item: i },
+        });
+      } catch (err) {
+        const hint = 'Verify your channel access token and that the target User ID follows your bot';
+        if (this.continueOnFail()) {
+          out.push({ json: { message: (err as any)?.message, hint }, pairedItem: { item: i } });
+          continue;
+        }
+        throw new NodeOperationError(this.getNode(), `${(err as any)?.message}\n${hint}`, { itemIndex: i });
+      }
     }
+
+    return [out];
   }
 }

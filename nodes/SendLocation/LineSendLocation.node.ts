@@ -1,10 +1,5 @@
 import {
-  IExecuteFunctions,
-  INodeExecutionData,
-  INodeType,
-  INodeTypeDescription,
-  NodeOperationError,
-  NodeConnectionType,
+  IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeOperationError, NodeConnectionType, IHttpRequestMethods, IHttpRequestOptions,
 } from 'n8n-workflow';
 
 export class LineSendLocation implements INodeType {
@@ -14,90 +9,50 @@ export class LineSendLocation implements INodeType {
     icon: 'file:line.svg',
     group: ['transform'],
     version: 1,
-    description: 'Send location message via LINE',
+    description: 'Send a location message via LINE',
     defaults: { name: 'Send Location' },
     inputs: [NodeConnectionType.Main],
     outputs: [NodeConnectionType.Main],
     credentials: [{ name: 'lineApi', required: true }],
     properties: [
-      {
-        displayName: 'User ID',
-        name: 'userId',
-        type: 'string',
-        default: '',
-        required: true,
-        description: 'LINE user ID to send the location to',
-      },
-      {
-        displayName: 'Title',
-        name: 'title',
-        type: 'string',
-        default: '',
-        required: true,
-        description: 'Title for the location (e.g., "Office")',
-      },
-      {
-        displayName: 'Address',
-        name: 'address',
-        type: 'string',
-        default: '',
-        required: true,
-        description: 'Address to show (e.g., "Bangkok, Thailand")',
-      },
-      {
-        displayName: 'Latitude',
-        name: 'latitude',
-        type: 'number',
-        default: 13.7563,
-        required: true,
-      },
-      {
-        displayName: 'Longitude',
-        name: 'longitude',
-        type: 'number',
-        default: 100.5018,
-        required: true,
-      },
+      { displayName: 'User ID', name: 'userId', type: 'string', default: '', placeholder: 'e.g. Uxxxxxxxx…', description: 'LINE user ID to push the message to', required: true },
+      { displayName: 'Title', name: 'title', type: 'string', default: 'Office', description: 'Title for the location', required: true },
+      { displayName: 'Address', name: 'address', type: 'string', default: 'Bangkok, Thailand', description: 'Address to show', required: true },
+      { displayName: 'Latitude', name: 'latitude', type: 'number', default: 13.7563, required: true },
+      { displayName: 'Longitude', name: 'longitude', type: 'number', default: 100.5018, required: true },
+      { displayName: 'Simplify', name: 'simplify', type: 'boolean', default: true, description: 'Whether to return a simplified version of the response instead of the raw data' },
+      { displayName: 'Options', name: 'options', type: 'collection', default: {}, placeholder: 'Add option', options: [{ displayName: 'Timeout', name: 'timeout', type: 'number', default: 15000, description: 'Request timeout in milliseconds' }] },
     ],
   };
 
   async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    const cred = await this.getCredentials('lineApi') as { accessToken: string };
+    const items = this.getInputData();
+    const out: INodeExecutionData[] = [];
+    const url = 'https://api.line.me/v2/bot/message/push';
 
-    const userId = this.getNodeParameter('userId', 0) as string;
-    const title = this.getNodeParameter('title', 0) as string;
-    const address = this.getNodeParameter('address', 0) as string;
-    const latitude = this.getNodeParameter('latitude', 0) as number;
-    const longitude = this.getNodeParameter('longitude', 0) as number;
+    for (let i = 0; i < items.length; i++) {
+      try {
+        const userId = this.getNodeParameter('userId', i) as string;
+        const title = this.getNodeParameter('title', i) as string;
+        const address = this.getNodeParameter('address', i) as string;
+        const latitude = this.getNodeParameter('latitude', i) as number;
+        const longitude = this.getNodeParameter('longitude', i) as number;
+        const simplify = this.getNodeParameter('simplify', i) as boolean;
+        const { timeout = 15000 } = (this.getNodeParameter('options', i, {}) as { timeout?: number });
 
-    const payload = {
-      to: userId,
-      messages: [
-        {
-          type: 'location',
-          title,
-          address,
-          latitude,
-          longitude,
-        },
-      ],
-    };
+        const payload = { to: userId, messages: [{ type: 'location', title, address, latitude, longitude }] };
 
-    try {
-      const response = await this.helpers.httpRequest({
-        method: 'POST',
-        url: 'https://api.line.me/v2/bot/message/push',
-        headers: {
-          Authorization: `Bearer ${cred.accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: payload,
-        json: true,
-      });
+        const req: IHttpRequestOptions = { method: 'POST' as IHttpRequestMethods, url, json: true, body: payload, timeout };
+        const res = await this.helpers.httpRequestWithAuthentication.call(this, 'lineApi', req);
 
-      return this.prepareOutputData([{ json: { response } }]);
-    } catch (error) {
-      throw new NodeOperationError(this.getNode(), error);
+        out.push({ json: simplify ? { pushed: true, to: userId, type: 'location' } : { response: res, sentPayload: payload }, pairedItem: { item: i } });
+      } catch (err) {
+        const hint = 'Ensure latitude and longitude are valid numbers';
+        if (this.continueOnFail()) { out.push({ json: { message: (err as any)?.message, hint }, pairedItem: { item: i } }); continue; }
+        throw new NodeOperationError(this.getNode(), `${(err as any)?.message}\n${hint}`, { itemIndex: i });
+      }
     }
+
+    return [out];
   }
 }

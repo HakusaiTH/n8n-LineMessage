@@ -14,44 +14,28 @@ export class LineWebhook implements INodeType {
     group: ['trigger'],
     version: 1,
     description: 'Receive webhook events from LINE Messaging API',
-    defaults: {
-      name: 'LINE Webhook',
-    },
+    defaults: { name: 'LINE Webhook' },
     inputs: [],
     outputs: [NodeConnectionType.Main],
     webhooks: [
-      {
-        name: 'default',
-        httpMethod: 'POST',
-        path: 'webhook',
-      },
+      { name: 'default', httpMethod: 'POST', path: 'webhook' },
     ],
     properties: [
-      // เพิ่ม properties เช่น secret validation ได้ที่นี่
+      // Add channel secret validation parameters here if you want signature verification
     ],
   };
 
   webhookMethods = {
     default: {
-      checkExists: async function(this: IHookFunctions): Promise<boolean> {
-        // อนุญาตทุก request ให้ผ่าน
-        return true;
-      },
-      create: async function(this: IHookFunctions): Promise<boolean> {
-        return true;
-      },
-      delete: async function(this: IHookFunctions): Promise<boolean> {
-        return true;
-      },
+      checkExists: async function (this: IHookFunctions): Promise<boolean> { return true; },
+      create: async function (this: IHookFunctions): Promise<boolean> { return true; },
+      delete: async function (this: IHookFunctions): Promise<boolean> { return true; },
     },
   };
 
   async webhook(this: IWebhookFunctions) {
-    const body = this.getBodyData();
-    const events = Array.isArray(body.events) ? body.events : [];
-
-    return {
-      workflowData: [this.helpers.returnJsonArray(events.length ? events : [{ message: 'no events' }])],
-    };
+    const body = this.getBodyData() as any;
+    const events = Array.isArray(body?.events) ? body.events : [];
+    return { workflowData: [this.helpers.returnJsonArray(events.length ? events : [{ message: 'no events' }])] };
   }
 }
